@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -16,6 +17,10 @@ func main() {
 	// flag.Parse() parse the command-line arguments update default
 	// values of the flag with provided value.
 	flag.Parse()
+
+	// log.New() create a logger for writing information messages.
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
@@ -31,7 +36,7 @@ func main() {
 	// The value returned from the flag.String() is pointer
 	// So addr variable is pointer to a string value. We need to
 	// dereference the pointer.
-	log.Printf("Starting server on %s", *addr)
+	infoLog.Printf("Starting server on %s", *addr)
 	err := http.ListenAndServe(*addr, mux)
-	log.Fatal(err)
+	errorLog.Fatal(err)
 }
