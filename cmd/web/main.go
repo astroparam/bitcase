@@ -33,10 +33,16 @@ func main() {
 	fileServer := http.FileServer(http.Dir("./ui/static"))
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
+	// Initialize a new http.Server struct.
+	srv := &http.Server{
+		Addr:     *addr,
+		ErrorLog: errorLog,
+		Handler:  mux,
+	}
 	// The value returned from the flag.String() is pointer
 	// So addr variable is pointer to a string value. We need to
 	// dereference the pointer.
 	infoLog.Printf("Starting server on %s", *addr)
-	err := http.ListenAndServe(*addr, mux)
+	err := srv.ListenAndServe()
 	errorLog.Fatal(err)
 }
