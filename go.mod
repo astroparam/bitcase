@@ -1,3 +1,3 @@
-module github.com/astroparam/snippetbox
+module bitcase.com
 
 go 1.15
